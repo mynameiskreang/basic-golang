@@ -1,12 +1,13 @@
-package postgress
+package customer
 
 import (
+	"basic-golang/chapter-four/models"
 	structCustomer "basic-golang/chapter-four/structures/customer"
 	"github.com/sirupsen/logrus"
 )
 
 func GetCustomers(limit int) (customers structCustomer.Customers, err error) {
-	rows, errQuery := pgxConn.Query("select * from customer limit $1", limit)
+	rows, errQuery := models.PgxConn.Query("select * from customer limit $1", limit)
 	if errQuery != nil {
 		defer logrus.WithFields(logrus.Fields{
 			"database": "postgress",

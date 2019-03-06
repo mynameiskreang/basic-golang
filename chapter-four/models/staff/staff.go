@@ -1,12 +1,13 @@
-package postgress
+package staff
 
 import (
+	"basic-golang/chapter-four/models"
 	structuresStaff "basic-golang/chapter-four/structures/staff"
 	"github.com/sirupsen/logrus"
 )
 
 func GetStaffs(limit int) (staffs structuresStaff.Staffs, err error) {
-	rows, errQuery := pgxConn.Query("select staff_id,first_name,last_name from staff limit $1", limit)
+	rows, errQuery := models.PgxConn.Query("select staff_id,first_name,last_name from staff limit $1", limit)
 	if errQuery != nil {
 		defer logrus.WithFields(logrus.Fields{
 			"database": "postgress",

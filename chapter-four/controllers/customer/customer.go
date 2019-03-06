@@ -1,7 +1,7 @@
 package customer
 
 import (
-	"basic-golang/chapter-four/databases/postgress"
+	"basic-golang/chapter-four/models/customer"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -17,7 +17,7 @@ func GetCustomers(c *gin.Context) {
 		return
 	}
 
-	customers, err := postgress.GetCustomers(limit)
+	customers, err := customer.GetCustomers(limit)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err,
