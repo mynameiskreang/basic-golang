@@ -9,6 +9,10 @@ import (
 	"net/http"
 )
 
+func GetMoviesRent(c *gin.Context, param middleware.QueryParam) {
+
+}
+
 func GetMoives(c *gin.Context, param middleware.QueryParam) {
 	movies, err := movie.GetMovies()
 	fmt.Println(err)
