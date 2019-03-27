@@ -23,33 +23,39 @@ func ProcessCustomers(c *gin.Context) {
 
 	//groupCustomer := dto.Customers{}
 	wg := sync.WaitGroup{}
-	wg.Add(1)
-	go func() {
-		customers, _ := model.GetCustomers(5000)
-		for i := 0; i < 1000; i++ {
+	wg.Add(5000)
+	customers, _ := model.GetCustomers(5000)
+	for i := 0; i < 5000; i++ {
+		go func() {
 			result := 0.0
 			for _, custo := range customers {
 				result += math.Pi * math.Sin(float64(len(custo.FirstName)))
 				resp := Resp{custo.FirstName + " " + custo.LastName, math.Abs(result)}
 				resps = append(resps, resp)
 			}
-		}
+		}()
 		wg.Done()
-	}()
+	}
 
-	go func() {
-		for i := 0; i < 100; i++ {
-			result := 0.0
-			for i := 0; i < 1000; i++ {
-				customer, _ := model.GetCustomer(strconv.Itoa(i))
-				result += math.Pi * math.Sin(float64(len(customer.LastName)))
-				//groupCustomer = append(groupCustomer, customer)
-				resp := Resp{customer.FirstName + " " + customer.LastName, math.Abs(result)}
-				resps = append(resps, resp)
+	wg.Add(100)
+
+	//ch := make(chan bool, 10)
+	for i := 0; i < 100; i++ {
+		result := 0.0
+		customer, err := model.GetCustomer(strconv.Itoa(i))
+		go func() {
+			for j := 0; j < 1000; j++ {
+				//ch <- true
+				if err != nil {
+					result += math.Pi * math.Sin(float64(len(customer.LastName)))
+					resp := Resp{customer.FirstName + " " + customer.LastName, math.Abs(result)}
+					resps = append(resps, resp)
+				}
+				//<-ch
 			}
-		}
-		wg.Done()
-	}()
+			wg.Done()
+		}()
+	}
 
 	wg.Wait()
 

@@ -7,7 +7,7 @@ import (
 
 func GetCustomers(limit int) (customers dto.Customers, err error) {
 	rows, errQuery := PgxConn.Query("select * from customer limit $1", limit)
-	defer rows.Close()
+	//defer rows.Close()
 
 	if errQuery != nil {
 		defer logrus.WithFields(logrus.Fields{
