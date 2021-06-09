@@ -81,3 +81,37 @@ func isLucky(n int) bool {
 	}
 	return sumL == sumR
 }
+
+// 12: sortByHeight https://app.codesignal.com/arcade/intro/level-3/D6qmdBL2NYz49XHwM
+func sortByHeight(a []int) []int {
+	minusOne := []int{}
+	normalNumber := []int{}
+	// Split Data
+	for i := 0; i < len(a); i++ {
+		if a[i] != -1 {
+			normalNumber = append(normalNumber, a[i])
+		} else {
+			minusOne = append(minusOne, i)
+		}
+	}
+	// Order Normal Number
+	for i := 0; i < len(normalNumber)-1; {
+		if normalNumber[i] > normalNumber[i+1] {
+			normalNumber[i], normalNumber[i+1] = normalNumber[i+1], normalNumber[i]
+			i = 0
+		} else {
+			i++
+		}
+	}
+	// Insert -1 at index
+	for i := 0; i < len(minusOne); i++ {
+		normalNumber = append(normalNumber, -1)
+		if minusOne[i] == 0 {
+			copy(normalNumber[minusOne[i]+1:], normalNumber[:])
+		} else {
+			copy(normalNumber[minusOne[i]:], normalNumber[minusOne[i]-1:])
+		}
+		normalNumber[minusOne[i]] = -1
+	}
+	return normalNumber
+}
