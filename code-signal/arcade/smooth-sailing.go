@@ -115,3 +115,41 @@ func sortByHeight(a []int) []int {
 	}
 	return normalNumber
 }
+
+// 13: reverseInParentheses https://app.codesignal.com/arcade/intro/level-3/9DgaPsE2a7M6M2Hu6
+func reverseInParentheses(inputString string) string {
+	fmt.Println(inputString)
+	LeftBracket := -1
+	RightBracket := -1
+	for i := 0; i < len([]rune(inputString)); i++ {
+		if inputString[i] == '(' {
+			LeftBracket = i
+		}
+		if inputString[i] == ')' {
+			RightBracket = i
+			break
+		}
+	}
+	fmt.Println(LeftBracket, RightBracket)
+	if LeftBracket == RightBracket {
+		return inputString
+	}
+
+	bInputString := []rune(inputString)
+
+	// loop คือจำนวนครั้งที่ต้องสลับระหว่าง ตัวต้น LeftBracket+i กับตัวท้าย RightBracket-i
+	loop := int(((RightBracket - LeftBracket) - 1) / 2)
+	for i := 1; i < loop+1; i++ {
+		bInputString[LeftBracket+i], bInputString[RightBracket-i] = bInputString[RightBracket-i], bInputString[LeftBracket+i]
+	}
+
+	bInputString = delChar(bInputString, RightBracket)
+	bInputString = delChar(bInputString, LeftBracket)
+	fmt.Println(string(bInputString))
+	inputString = string(bInputString)
+
+	return reverseInParentheses(inputString)
+}
+func delChar(s []rune, index int) []rune {
+	return append(s[0:index], s[index+1:]...)
+}
