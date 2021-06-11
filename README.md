@@ -23,3 +23,13 @@ Basic Go example projects
 
 ## Database - Postgress
 Install sample data [dvdrental](http://www.postgresqltutorial.com/postgresql-sample-database/)
+
+## Programming.in.th
+> https://programming.in.th/task/index.php
+
+เพิ่มเฉลย Programming.in.th
+
+## Code Signal - 06Jun2021
+> https://app.codesignal.com
+
+เพิ่มเฉลย Code Signal
