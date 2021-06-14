@@ -14,3 +14,22 @@ func forkAlternatingSums(a []int) []int {
 	a[2] = a[0] + a[2]
 	return forkAlternatingSums(a[1:])
 }
+
+// 15: addBorder https://app.codesignal.com/arcade/intro/level-4/ZCD7NQnED724bJtjN
+func addBorder(picture []string) []string {
+	HL := len(picture[0]) + 2
+	output := []string{getStar(HL)}
+	for i := 0; i < len(picture); i++ {
+		picture[i] = "*" + picture[i] + "*"
+	}
+	output = append(output, picture...)
+	output = append(output, getStar(HL))
+	return output
+}
+func getStar(n int) string {
+	s := ""
+	for i := 0; i < n; i++ {
+		s = s + "*"
+	}
+	return s
+}
