@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 // 14: alternatingSums https://app.codesignal.com/arcade/intro/level-4/cC5QuL9fqvZjXJsW9
 func alternatingSums(a []int) []int {
 	if len(a)%2 != 0 {
@@ -32,4 +34,41 @@ func getStar(n int) string {
 		s = s + "*"
 	}
 	return s
+}
+
+// 16: areSimilar https://app.codesignal.com/arcade/intro/level-4/xYXfzQmnhBvEKJwXP
+func areSimilar(a []int, b []int) bool {
+	// check member
+	memberA := countSameNumber(a)
+	memberB := countSameNumber(b)
+	fmt.Println(memberA, memberB)
+	for _, v := range a {
+		if memberA[v] != memberB[v] {
+			return false
+		}
+	}
+
+	// check swapping
+	countMiss := 0
+	for i := 0; i < len(a); i++ {
+		if a[i] != b[i] {
+			countMiss++
+		}
+	}
+	if countMiss >= 3 {
+		return false
+	}
+	return true
+}
+
+func countSameNumber(a []int) map[int]int {
+	mapAB := make(map[int]int)
+	for _, v := range a {
+		if val, ok := mapAB[v]; ok {
+			mapAB[v] = val + 1
+		} else {
+			mapAB[v] = 1
+		}
+	}
+	return mapAB
 }
