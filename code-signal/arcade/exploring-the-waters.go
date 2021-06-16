@@ -72,3 +72,16 @@ func countSameNumber(a []int) map[int]int {
 	}
 	return mapAB
 }
+
+// 17: arrayChange https://app.codesignal.com/arcade/intro/level-4/xvkRbxYkdHdHNCKjg
+func arrayChange(inputArray []int) int {
+	step := 0
+	for i := 1; i < len(inputArray); i++ {
+		if inputArray[i] <= inputArray[i-1] {
+			gap := inputArray[i-1] - inputArray[i] + 1
+			inputArray[i] += gap
+			step += gap
+		}
+	}
+	return step
+}
