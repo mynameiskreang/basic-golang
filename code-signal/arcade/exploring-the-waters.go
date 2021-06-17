@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // 14: alternatingSums https://app.codesignal.com/arcade/intro/level-4/cC5QuL9fqvZjXJsW9
 func alternatingSums(a []int) []int {
@@ -84,4 +87,24 @@ func arrayChange(inputArray []int) int {
 		}
 	}
 	return step
+}
+
+// 18: palindromeRearranging https://app.codesignal.com/arcade/intro/level-4/Xfeo7r9SBSpo3Wico
+func palindromeRearranging(inputString string) bool {
+	mapChar := make(map[string]bool)
+	countOdd := 0
+	for _, v := range inputString {
+		c := strings.Count(inputString, string(v))
+		if _, ok := mapChar[string(v)]; ok == false {
+			mapChar[string(v)] = true
+			if c%2 != 0 {
+				fmt.Println(string(v), c)
+				countOdd++
+			}
+			if countOdd > 1 {
+				return false
+			}
+		}
+	}
+	return true
 }
