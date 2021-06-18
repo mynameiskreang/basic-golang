@@ -2,6 +2,7 @@ package main
 
 import (
 	"basic-golang/opn/cipher"
+	"basic-golang/opn/connector"
 	"bytes"
 	"fmt"
 	"github.com/davecgh/go-spew/spew"
@@ -20,10 +21,7 @@ const (
 )
 
 func main() {
-	client, e := omise.NewClient(OmisePublicKey, OmiseSecretKey)
-	if e != nil {
-		log.Fatal(e)
-	}
+	oClient := connector.OmiseCreateClient()
 
 	// Name,AmountSubunits,CCNumber,CVV,ExpMonth,ExpYear
 	// Mr. Grossman R Oldbuck,2879410,5375543637862918,488,11,2021
@@ -34,14 +32,13 @@ func main() {
 		ExpirationYear:  2021,
 	}
 
-	if e := client.Do(token, createToken); e != nil {
+	if e := oClient.Do(token, createToken); e != nil {
 		log.Fatal(e)
-		client.CloseIdleConnections()
 	}
 
 	spew.Dump(token)
 	log.Printf("token_id: %s  card_id: %s\n", token.ID, token.Card.ID)
-	client.CloseIdleConnections()
+	connector.OmiseCloseClient(oClient)
 }
 
 func main2() {
