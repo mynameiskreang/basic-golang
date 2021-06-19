@@ -1,98 +1,97 @@
 package main
 
 import (
-	"basic-golang/opn/cipher"
-	"basic-golang/opn/connector"
-	"bytes"
+	"basic-golang/opn/controller"
+	"basic-golang/opn/helper"
+	"basic-golang/opn/schema"
+	"encoding/csv"
+	"flag"
 	"fmt"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/omise/omise-go"
-	"github.com/omise/omise-go/operations"
-	"io"
-	"io/ioutil"
-	"log"
-	"os"
+	"strconv"
+	"time"
 )
 
-const (
-	// Read these from environment variables or configuration files!
-	OmisePublicKey = "pkey_test_5o7hm6cr225xp9o1tdq"
-	OmiseSecretKey = "skey_test_5o7hm6cr2f7ihcf3fg8"
-)
+var fileInput string
+var fileOutput string
 
+func init() {
+	flag.StringVar(&fileInput, "f", "", "-f path file .rot128")
+	flag.StringVar(&fileOutput, "o", "", "-o path file .csv")
+}
 func main() {
-	oClient := connector.OmiseCreateClient()
+	flag.Parse()
+	fmt.Println(fileInput, fileOutput)
+	cipReader := helper.Rot128ToCSV(fileInput)
 
-	// Name,AmountSubunits,CCNumber,CVV,ExpMonth,ExpYear
-	// Mr. Grossman R Oldbuck,2879410,5375543637862918,488,11,2021
-	token, createToken := &omise.Token{}, &operations.CreateToken{
-		Name:            "Mr. Grossman R Oldbuck",
-		Number:          "5375543637862918",
-		ExpirationMonth: 11,
-		ExpirationYear:  2021,
+	// Step 1 Read File .rot128 to CSV
+	records, err := csv.NewReader(cipReader).ReadAll()
+	if err != nil {
+		fmt.Println(err)
 	}
 
-	if e := oClient.Do(token, createToken); e != nil {
-		log.Fatal(e)
+	// Step 2 Prepare Schema TamBoon
+	tamBoons := []schema.TamBoon{}
+	for i := 1; i < len(records); i++ {
+		record := records[i]
+		name, amountSubunits, ccNumber, cvv, expMonth, expYear := record[0], record[1], record[2], record[3], record[4], record[5]
+		amount, _ := strconv.Atoi(amountSubunits)
+		cvvI, _ := strconv.Atoi(cvv)
+		expMonthI, _ := strconv.Atoi(expMonth)
+		expYearI, _ := strconv.Atoi(expYear)
+		tamBoon := schema.TamBoon{
+			Name: name, AmountSubunits: int64(amount), CCNumber: ccNumber, CVV: cvvI, ExpMonth: time.Month(expMonthI), ExpYear: expYearI,
+		}
+		tamBoons = append(tamBoons, tamBoon)
 	}
 
-	spew.Dump(token)
-	log.Printf("token_id: %s  card_id: %s\n", token.ID, token.Card.ID)
-	connector.OmiseCloseClient(oClient)
-}
+	txnTamBoon := schema.TxnTamBoon{}
+	amountTamBoon := schema.AmountTamBoon{}
+	mapNameAmount := make(map[string]int64)
+	for i := 0; i < len(tamBoons) && i < 10; i++ {
+		tamBoon := tamBoons[i]
+		txnTamBoon.Total = txnTamBoon.Total + 1                            // Person
+		amountTamBoon.Total = amountTamBoon.Total + tamBoon.AmountSubunits // Amount
 
-func main2() {
-	//client, e := omise.NewClient(OmisePublicKey, OmiseSecretKey)
-	//if e != nil {
-	//	log.Fatal(e)
-	//}
-	//
-	///** Retrieve a token from a request
-	// * A token should be created from a client side by using our client-side libraries
-	// * https://www.omise.co/libraries#client-side-libraries
-	// * More information:
-	// * - https://www.omise.co/collecting-card-information
-	// * - https://www.omise.co/security-best-practices
-	// **/
-	//token := "tokn_xxxxxxxxxxxxx"
-	//
-	//// Creates a charge from the token
-	//charge, createCharge := &omise.Charge{}, &operations.CreateCharge{
-	//	Amount:   100000, // ฿ 1,000.00
-	//	Currency: "thb",
-	//	Card:     token.ID,
-	//}
-	//if e := client.Do(charge, createCharge); e != nil {
-	//	log.Fatal(e)
-	//}
-	//
-	//log.Printf("charge: %s  amount: %s %d\n", charge.ID, charge.Currency, charge.Amount)
-}
+		// Step 3 Create Token Per Record
+		token, errCreateToken := controller.CreateToken(tamBoon)
 
-func readCSV() {
-	cf, _ := os.Create("./fng.1000.csv")
-	f, _ := os.Open("./fng.1000.csv.rot128")
-	b, _ := ioutil.ReadAll(f)
+		// Step 4 Create Charge Per Record
+		errCreateCharge := new(error)
+		charge := &omise.Charge{}
+		if errCreateToken == nil {
+			if charge, errCreateCharge = controller.CreateCharge(tamBoon, token); errCreateCharge == nil {
+				txnTamBoon.Success = txnTamBoon.Success + 1
+				amountTamBoon.Success = amountTamBoon.Success + charge.Amount
+				if val, isExist := mapNameAmount[tamBoon.Name]; isExist {
+					mapNameAmount[tamBoon.Name] = val + tamBoon.AmountSubunits
+				} else {
+					mapNameAmount[tamBoon.Name] = tamBoon.AmountSubunits
+				}
+			}
+		}
 
-	byRead := make([]byte, len(b))
-	f2, _ := os.Open("./fng.1000.csv.rot128")
-	cipReader, _ := cipher.NewRot128Reader(f2)
-	cipReader.Read(byRead)
-	cf.Write(byRead)
-}
-
-func mainOld() {
-	cf, _ := os.Create("./fng.1000.txt")
-	f, _ := os.Open("./fng.1000.csv.rot128")
-	cipReader, _ := cipher.NewRot128Reader(f)
-	byRead := make([]byte, bytes.MinRead)
-	for {
-		n, err := cipReader.Read(byRead)
-		fmt.Println(string(byRead[:n]))
-		cf.Write(byRead)
-		if err == io.EOF {
-			break
-			cf.Close()
+		if errCreateToken != nil || errCreateCharge != nil {
+			txnTamBoon.Fail = txnTamBoon.Fail + 1
+			amountTamBoon.Fail = amountTamBoon.Fail + tamBoon.AmountSubunits
 		}
 	}
+
+	// Step 5 Summary
+	fmt.Println(txnTamBoon)
+	fmt.Println(amountTamBoon)
+	fmt.Println(mapNameAmount)
+
+	//// Mr. Grossman R Oldbuck,2879410,5375543637862918,488,11,2021
+	//tamBoon := schema.TamBoon{
+	//	Name:           "Mr. Grossman R Oldbuck",
+	//	AmountSubunits: 2879410,
+	//	CCNumber:       "5375543637862918",
+	//	CVV:            488,
+	//	ExpMonth:       11,
+	//	ExpYear:        2021,
+	//}
+	//
+	//token := controller.CreateToken(tamBoon)
+	//_ = controller.CreateCharge(tamBoon, token)
 }
