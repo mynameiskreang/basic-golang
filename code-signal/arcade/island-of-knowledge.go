@@ -1,5 +1,9 @@
 package main
 
+import (
+	"math"
+)
+
 // 19: areEquallyStrong https://app.codesignal.com/arcade/intro/level-5/g6dc9KJyxmFjB98dL
 func areEquallyStrong(yourLeft int, yourRight int, friendsLeft int, friendsRight int) bool {
 	if yourLeft+yourRight != friendsLeft+friendsRight {
@@ -16,4 +20,20 @@ func areEquallyStrong(yourLeft int, yourRight int, friendsLeft int, friendsRight
 	}
 
 	return true
+}
+
+// 20: arrayMaximalAdjacentDifference https://app.codesignal.com/arcade/intro/level-5/EEJxjQ7oo7C5wAGjE
+func arrayMaximalAdjacentDifference(inputArray []int) int {
+	return arrayMaximalAdjacentDifferenceMax(inputArray, 0)
+}
+
+func arrayMaximalAdjacentDifferenceMax(inputArray []int, max int) int {
+	if len(inputArray) == 1 {
+		return max
+	}
+	result := int(math.Abs(float64(inputArray[0] - inputArray[1])))
+	if result > max {
+		max = result
+	}
+	return arrayMaximalAdjacentDifferenceMax(inputArray[1:], max)
 }
