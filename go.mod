@@ -6,6 +6,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.6.1
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/davecgh/go-spew v1.1.1
+	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/gin-contrib/sse v0.0.0-20190301062529-5545eab6dad3 // indirect
 	github.com/gin-gonic/gin v1.3.0
 	github.com/golang/protobuf v1.3.1 // indirect

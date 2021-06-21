@@ -7,7 +7,9 @@ import (
 	"encoding/csv"
 	"flag"
 	"fmt"
+	"github.com/dustin/go-humanize"
 	"github.com/omise/omise-go"
+	"sort"
 	"strconv"
 	"time"
 )
@@ -48,7 +50,7 @@ func main() {
 	txnTamBoon := schema.TxnTamBoon{}
 	amountTamBoon := schema.AmountTamBoon{}
 	mapNameAmount := make(map[string]int64)
-	for i := 0; i < len(tamBoons) && i < 10; i++ {
+	for i := 0; i < len(tamBoons); i++ {
 		tamBoon := tamBoons[i]
 		txnTamBoon.Total = txnTamBoon.Total + 1                            // Person
 		amountTamBoon.Total = amountTamBoon.Total + tamBoon.AmountSubunits // Amount
@@ -77,21 +79,32 @@ func main() {
 		}
 	}
 
-	// Step 5 Summary
-	fmt.Println(txnTamBoon)
-	fmt.Println(amountTamBoon)
-	fmt.Println(mapNameAmount)
+	// Step 5 Done... Summary
+	fmt.Println("performing donations...")
+	fmt.Println("done.")
 
-	//// Mr. Grossman R Oldbuck,2879410,5375543637862918,488,11,2021
-	//tamBoon := schema.TamBoon{
-	//	Name:           "Mr. Grossman R Oldbuck",
-	//	AmountSubunits: 2879410,
-	//	CCNumber:       "5375543637862918",
-	//	CVV:            488,
-	//	ExpMonth:       11,
-	//	ExpYear:        2021,
-	//}
-	//
-	//token := controller.CreateToken(tamBoon)
-	//_ = controller.CreateCharge(tamBoon, token)
+	summary(mapNameAmount, amountTamBoon, txnTamBoon)
+
+	fmt.Println(mapNameAmount)
+	fmt.Println(amountTamBoon)
+	fmt.Println(txnTamBoon)
+
+}
+
+func summary(mapNameAmount map[string]int64, amountTamBoon schema.AmountTamBoon, txnTamBoon schema.TxnTamBoon) {
+	fmt.Printf("total received: THB\t %s \n", humanize.Comma(amountTamBoon.Total))
+	fmt.Printf("successfully donated: THB\t %s \n", humanize.Comma(amountTamBoon.Success))
+	fmt.Printf("faulty donation: THB\t %s \n", humanize.Comma(amountTamBoon.Fail))
+	fmt.Printf("average per person: THB\t %s \n", humanize.Commaf(float64(amountTamBoon.Success)/float64(txnTamBoon.Success)))
+
+	var es helper.Entries
+	for k, v := range mapNameAmount {
+		es = append(es, helper.Entry{Key: k, Value: v})
+	}
+	sort.Sort(es)
+	if len(es) > 0 {
+		fmt.Printf("Top 3 Donors:\t\t %s", es[0].Key)
+		fmt.Printf("\n\t\t %s", es[1].Key)
+		fmt.Printf("\n\t\t %s", es[2].Key)
+	}
 }
