@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"log"
 	"os"
 )
 
@@ -24,8 +25,14 @@ import (
 }*/
 
 func Rot128ToCSV(inputFile string) *cipher.Rot128Reader {
-	f, _ := os.Open(inputFile)
-	cipReader, _ := cipher.NewRot128Reader(f)
+	f, errF := os.Open(inputFile)
+	if errF != nil {
+		log.Fatalln(errF)
+	}
+	cipReader, errCip := cipher.NewRot128Reader(f)
+	if errCip != nil {
+		log.Fatalln(errCip)
+	}
 	return cipReader
 }
 

@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/dustin/go-humanize"
 	"github.com/omise/omise-go"
+	"log"
 	"sort"
 	"strconv"
 	"sync"
@@ -32,7 +33,7 @@ func main() {
 	cipReader := helper.Rot128ToCSV(fileInput)
 	records, err := csv.NewReader(cipReader).ReadAll()
 	if err != nil {
-		fmt.Println(err)
+		log.Fatalln(err)
 	}
 
 	// Step 2 Prepare Schema TamBoon
@@ -52,6 +53,7 @@ func main() {
 		tamBoons = append(tamBoons, tamBoon)
 	}
 
+	// Step 3, 4
 	txnTamBoon := schema.TxnTamBoon{}
 	amountTamBoon := schema.AmountTamBoon{}
 	mapNameAmount := make(map[string]int64)
