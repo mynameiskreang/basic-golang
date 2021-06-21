@@ -10,17 +10,17 @@ import (
 )
 
 func CreateCharge(tamBoon schema.TamBoon, token *omise.Token) (*omise.Charge, *error) {
-	oClient := connector.OmiseCreateClient()
+	//oClient := connector.OmiseCreateClient()
 	charge, createCharge := &omise.Charge{}, &operations.CreateCharge{
 		Amount:   tamBoon.AmountSubunits,
 		Currency: "thb",
 		Card:     token.ID,
 	}
-	if e := oClient.Do(charge, createCharge); e != nil {
-		fmt.Errorf("%s", e)
+	if e := connector.POmiseClient.Do(charge, createCharge); e != nil {
+		fmt.Println("Fail to create charge", e)
 		return charge, &e
 	}
 	log.Printf("charge: %s  amount: %s %d\n", charge.ID, charge.Currency, charge.Amount)
-	connector.OmiseCloseClient(oClient)
+	//connector.OmiseCloseClient(oClient)
 	return charge, nil
 }

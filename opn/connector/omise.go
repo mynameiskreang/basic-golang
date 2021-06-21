@@ -5,6 +5,8 @@ import (
 	"log"
 )
 
+var POmiseClient *omise.Client
+
 func OmiseCreateClient() *omise.Client {
 	omiseClient, err := omise.NewClient(OmisePublicKey, OmiseSecretKey)
 	if err != nil {
@@ -15,4 +17,8 @@ func OmiseCreateClient() *omise.Client {
 
 func OmiseCloseClient(omiseClient *omise.Client) {
 	omiseClient.CloseIdleConnections()
+}
+
+func PConnection() {
+	POmiseClient = OmiseCreateClient()
 }

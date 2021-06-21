@@ -11,7 +11,7 @@ import (
 
 // func CreateToken(tamBoon interface{}) *omise.Token,error {
 func CreateToken(tamBoon schema.TamBoon) (*omise.Token, error) {
-	oClient := connector.OmiseCreateClient()
+	//oClient := connector.OmiseCreateClient()
 	token, createToken := &omise.Token{}, &operations.CreateToken{
 		Name:            tamBoon.Name,
 		Number:          tamBoon.CCNumber,
@@ -19,12 +19,12 @@ func CreateToken(tamBoon schema.TamBoon) (*omise.Token, error) {
 		ExpirationYear:  tamBoon.ExpYear,
 	}
 
-	if e := oClient.Do(token, createToken); e != nil {
-		fmt.Errorf("%s", e)
+	if e := connector.POmiseClient.Do(token, createToken); e != nil {
+		fmt.Println("Fail to create token", e)
 		return token, e
 	}
 
 	log.Printf("token_id: %s  card_id: %s\n", token.ID, token.Card.ID)
-	connector.OmiseCloseClient(oClient)
+	//connector.OmiseCloseClient(oClient)
 	return token, nil
 }
