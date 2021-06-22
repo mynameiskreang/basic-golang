@@ -2,6 +2,8 @@ package main
 
 import (
 	"math"
+	"strconv"
+	"strings"
 )
 
 // 19: areEquallyStrong https://app.codesignal.com/arcade/intro/level-5/g6dc9KJyxmFjB98dL
@@ -36,4 +38,27 @@ func arrayMaximalAdjacentDifferenceMax(inputArray []int, max int) int {
 		max = result
 	}
 	return arrayMaximalAdjacentDifferenceMax(inputArray[1:], max)
+}
+
+// 21: isIPv4Address https://app.codesignal.com/arcade/intro/level-5/veW5xJednTy4qcjso
+func isIPv4Address(inputString string) bool {
+
+	// Interesting Solution
+	// return net.ParseIP(inputString) != nil
+	// Just using package "net"
+
+	ips := strings.Split(inputString, ".")
+	if len(ips) != 4 {
+		return false
+	}
+	for _, ip := range ips {
+		ipN, err := strconv.Atoi(ip)
+		if err != nil {
+			return false
+		}
+		if ipN < 0 || ipN > 255 || len(ip) == 0 || len(ip) != len(strconv.Itoa(ipN)) {
+			return false
+		}
+	}
+	return true
 }
