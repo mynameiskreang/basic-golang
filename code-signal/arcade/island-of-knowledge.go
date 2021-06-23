@@ -62,3 +62,19 @@ func isIPv4Address(inputString string) bool {
 	}
 	return true
 }
+
+// 22: avoidObstacles https://app.codesignal.com/arcade/intro/level-5/XC9Q2DhRRKQrfLhb5
+func avoidObstacles(inputArray []int) int {
+	start := 2
+	for i := 0; i < len(inputArray); {
+		stand := inputArray[i]
+		if stand%start == 0 || stand == start {
+			start++
+			i = 0
+			continue
+		} else {
+			i++
+		}
+	}
+	return start
+}

@@ -6,6 +6,8 @@ import (
 )
 
 func main() {
+	output := primeFactors(12345)
+	fmt.Println(output)
 	input := []int{2, 100}
 	set := make(map[int]bool)
 
@@ -86,4 +88,16 @@ func findGCD(num1, num2 int) int {
 func findLCM(num1, num2 int) int {
 	//56/28*84
 	return num1 * num2 / findGCD(num1, num2)
+}
+
+// แยกตัวประกอบ
+func primeFactors(num int) []int {
+	output := []int{}
+	for i := 2; num != 1; i++ {
+		for num%i == 0 {
+			output = append(output, i)
+			num = num / i
+		}
+	}
+	return output
 }
