@@ -78,3 +78,49 @@ func avoidObstacles(inputArray []int) int {
 	}
 	return start
 }
+
+// 23:  boxBlur https://app.codesignal.com/arcade/intro/level-5/5xPitc3yT3dqS7XkP
+func boxBlur(image [][]int) [][]int {
+	maxX := len(image[0])
+	maxY := len(image)
+	// fmt.Println(maxX,maxY)
+	// fmt.Println()
+	output := [][]int{}
+	// yLine:=[]int{}
+	for y := 0; y < maxY-2; y++ {
+		xLine := []int{}
+		for x := 0; x < maxX-2; x++ {
+			sum := 0
+			for i := 0; i < 3; i++ {
+				for j := 0; j < 3; j++ {
+					// fmt.Printf(" %d ",image[i+y][j+x])
+					sum = sum + image[i+y][j+x]
+				}
+				// fmt.Println()
+			}
+			result := sum / 9
+			xLine = append(xLine, result)
+			// fmt.Println("result", result)
+		}
+		output = append(output, xLine)
+	}
+	return output
+}
+
+// มี solution ที่น่าสนใจก็คือ
+func boxBlurSolution(image [][]int) [][]int {
+	// Step 1 prepare array
+	b := make([][]int, len(image)-2)
+	for i := range b {
+		b[i] = make([]int, len(image[0])-2)
+	}
+	// Step 2 loop array b & summary
+	for i := 0; i < len(b); i++ {
+		for j := 0; j < len(b[0]); j++ {
+			b[i][j] = (image[i][j] + image[i+1][j] + image[i+2][j] +
+				image[i][j+1] + image[i+1][j+1] + image[i+2][j+1] +
+				image[i][j+2] + image[i+1][j+2] + image[i+2][j+2]) / 9
+		}
+	}
+	return b
+}
