@@ -124,3 +124,101 @@ func boxBlurSolution(image [][]int) [][]int {
 	}
 	return b
 }
+
+// 24: minesweeper https://app.codesignal.com/arcade/intro/level-5/ZMR5n7vJbexnLrgaM
+func minesweeper(matrix [][]bool) [][]int {
+	output:=make([][]int,len(matrix))
+	for i:= range matrix{
+		output[i] = make([]int,len(matrix[0]))
+	}
+	// -1,-1  0,-1  +1,-1
+	// -1, 0  j, i  +1, 0
+	// -1,+1  0,+1  +1,+1
+	for i:=0;i<len(output);i++{
+		for j:=0;j<len(output[0]);j++{
+			count:=0
+			// Line1
+			// -1,-1
+			if i-1 >= 0 && j-1 >= 0 && matrix[i-1][j-1]{
+				count++
+			}
+			// 0,-1
+			if j-1 >= 0 && matrix[i][j-1]{
+				count++
+			}
+			// +1,-1
+			if i+1 < len(matrix) && j-1 >= 0 && matrix[i+1][j-1]{
+				count++
+			}
+			// Line2
+			// -1,0
+			if i-1 >= 0 && matrix[i-1][j]{
+				count++
+			}
+			// +1,0
+			if i+1 < len(matrix)  && matrix[i+1][j]{
+				count++
+			}
+			// Line3
+			// -1,+1
+			if i-1 >= 0 && j+1 < len(matrix[0]) && matrix[i-1][j+1]{
+				count++
+			}
+			// 0,+1
+			if j+1 < len(matrix[0]) && matrix[i][j+1]{
+				count++
+			}
+			// +1,+1
+			if i+1 < len(matrix) && j+1 < len(matrix[0]) && matrix[i+1][j+1]{
+				count++
+			}
+			output[i][j] = count
+		}
+	}
+	return output
+}
+
+// solution นี้น่าสนใจมาก
+// มีการประกาศ neighbors เพื่อทำ mapping ไว้ก่อน
+// มันทำให้ code อ่านง่าย
+// https://app.codesignal.com/arcade/intro/level-5/ZMR5n7vJbexnLrgaM/solutions?solutionId=L65AiqxdvN5fyTrnR
+{
+	var neighbors = [][]int{
+		{ -1, -1}, {0, -1}, {1, -1},
+		{ -1,  0},          {1, 0},
+		{ -1,  1}, {0,  1}, {1, 1},
+	}
+
+	func mine(field [][]bool, x, y int) int {
+		if (x < 0 || x >= len(field[0])) {
+			return 0
+		}
+		if (y < 0 || y >= len(field)) {
+			return 0
+		}
+		if (field[y][x]) {
+			return 1
+		}
+		return 0
+	}
+
+	func eval(field [][]bool, x, y int) int {
+		sum := 0
+		for _, n := range neighbors {
+			sum += mine(field, x + n[0], y + n[1])
+		}
+		return sum
+	}
+
+	func minesweeperL65AiqxdvN5fyTrnR(field [][]bool) [][]int {
+		var ret [][]int
+		for y := range field {
+			row := make([]int, len(field[0]))
+			for x := range row {
+				row[x] = eval(field, x, y)
+			}
+			ret = append(ret, row)
+		}
+		return ret
+	}
+}
