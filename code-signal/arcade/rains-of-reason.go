@@ -29,3 +29,31 @@ func evenDigitsOnly(n int) bool {
 	}
 	return true
 }
+
+//  27: variableName https://app.codesignal.com/arcade/intro/level-6/6Wv4WsrsMJ8Y2Fwno
+func variableName(name string) bool {
+	// a-z -> 97-122
+	// A-Z -> 65-90
+	// 0-9 -> 48-57
+	// 95 -> _
+
+	if name[0] >= 48 && name[0] <= 57 {
+		return false
+	}
+
+	for _, s := range name {
+		if s >= 0 && s <= 47 {
+			return false
+		}
+		if s >= 58 && s <= 64 {
+			return false
+		}
+		if s >= 91 && s <= 94 || s == 96 {
+			return false
+		}
+		if s >= 123 && s <= 127 {
+			return false
+		}
+	}
+	return true
+}
