@@ -57,3 +57,16 @@ func variableName(name string) bool {
 	}
 	return true
 }
+
+// 28: alphabeticShift https://app.codesignal.com/arcade/intro/level-6/PWLT8GBrv9xXy4Dui
+func alphabeticShift(inputString string) string {
+	bs := []byte(inputString)
+	for i, c := range bs {
+		if c+1 == 123 {
+			bs[i] = 'a'
+		} else {
+			bs[i] = c + 1
+		}
+	}
+	return string(bs)
+}
