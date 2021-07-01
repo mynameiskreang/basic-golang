@@ -70,3 +70,24 @@ func alphabeticShift(inputString string) string {
 	}
 	return string(bs)
 }
+
+// 29: chessBoardCellColor https://app.codesignal.com/arcade/intro/level-6/t97bpjfrMDZH8GJhi
+func chessBoardCellColor(cell1 string, cell2 string) bool {
+	// a c e g 1 3 5 7 -> brown
+	// b d f h 2 4 6 8 -> brown
+	// 65 67 69 71, 49 51 53 55
+	// 66 68 70 72,
+	c1Yellow := true
+	c2Yellow := true
+	bcell1 := []byte(cell1)
+	bcell2 := []byte(cell2)
+	if (bcell1[0]%2 == 1 && bcell1[1]%2 == 1) || (bcell1[0]%2 == 0 && bcell1[1]%2 == 0) {
+		// brown
+		c1Yellow = false
+	}
+	if (bcell2[0]%2 == 1 && bcell2[1]%2 == 1) || (bcell2[0]%2 == 0 && bcell2[1]%2 == 0) {
+		// brown
+		c2Yellow = false
+	}
+	return c1Yellow == c2Yellow
+}
