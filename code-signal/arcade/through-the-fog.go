@@ -18,3 +18,20 @@ func circleOfNumbers(n int, firstNumber int) int {
 	return 0
 	// best solution -> return (firstNumber + n / 2) % n
 }
+
+// 31: depositProfit https://app.codesignal.com/arcade/intro/level-7/8PxjMSncp9ApA4DAb
+func depositProfit(deposit int, rate int, threshold int) int {
+	fD := float64(deposit)
+	fR := float64(rate)
+	fT := float64(threshold)
+	s := 0.0
+	for i := 1; true; i++ {
+		n := (fD + s) * fR / 100
+		s += n
+		if fD+s >= fT {
+			return i
+		}
+	}
+	return 0
+	// return int(math.Ceil(math.Log(float64(threshold) / float64(deposit)) / math.Log(1.0 + float64(rate) / 100)))
+}
