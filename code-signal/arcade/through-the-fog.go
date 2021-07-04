@@ -1,5 +1,7 @@
 package main
 
+import "math"
+
 // 30: circleOfNumbers https://app.codesignal.com/arcade/intro/level-7/vExYvcGnFsEYSt8nQ
 func circleOfNumbers(n int, firstNumber int) int {
 	s1 := make([]int, n/2)
@@ -34,4 +36,30 @@ func depositProfit(deposit int, rate int, threshold int) int {
 	}
 	return 0
 	// return int(math.Ceil(math.Log(float64(threshold) / float64(deposit)) / math.Log(1.0 + float64(rate) / 100)))
+}
+
+// 32: absoluteValuesSumMinimization https://app.codesignal.com/arcade/intro/level-7/ZFnQkq9RmMiyE6qtq
+func absoluteValuesSumMinimization(a []int) int {
+	m := math.MaxInt32
+	ans := a[0]
+	for _, v := range a {
+		n := getAbsoluteValuesSumMinimization(v, a)
+		if n == m && v < ans {
+			ans = v
+		}
+		if n < m {
+			m = n
+			ans = v
+		}
+
+	}
+	return ans
+	// best solution -> return A[(len(A)-1)/2]
+}
+func getAbsoluteValuesSumMinimization(i int, a []int) int {
+	s := 0.0
+	for _, v := range a {
+		s += math.Abs(float64(v - i))
+	}
+	return int(s)
 }
