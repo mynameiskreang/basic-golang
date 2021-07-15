@@ -63,3 +63,79 @@ func getAbsoluteValuesSumMinimization(i int, a []int) int {
 	}
 	return int(s)
 }
+
+// 33：stringsRearrangement https://app.codesignal.com/arcade/intro/level-7/PTWhv2oWqd6p4AHB9/
+func stringsRearrangement(inputArray []string) bool {
+	allPerm := make([][]string, getFactorial(len(inputArray)))
+	l := 0
+	Perm(inputArray, func(a []string) {
+		allPerm[l] = make([]string, len(inputArray))
+		copy(allPerm[l], a)
+		l++
+	})
+	for i := 0; i < len(allPerm); i++ {
+		r := 0
+		flag := true
+		cPerm := allPerm[i]
+		// fmt.Println(cPerm)
+		for j := 1; j < len(cPerm); j++ {
+			// fmt.Println(r,j)
+			isPass := checkChar(cPerm[r], cPerm[j])
+			if isPass {
+				r = j
+			} else {
+				flag = false
+				break
+			}
+		}
+		if flag {
+			return true
+		}
+	}
+
+	return false
+}
+
+func getFactorial(n int) int {
+	sum := 1
+	for i := 1; i < n+1; i++ {
+		sum = sum * i
+	}
+	return sum
+}
+
+func checkChar(s1, s2 string) bool {
+	missCount := 0
+	for i := 0; i < len(s1); i++ {
+		if s1[i] != s2[i] {
+			missCount++
+		}
+	}
+	if missCount >= 2 {
+		return false
+	}
+	if missCount == 0 {
+		return false
+	}
+	return true
+}
+
+// https://yourbasic.org/golang/generate-permutation-slice-string/
+// Perm calls f with each permutation of a.
+func Perm(a []string, f func([]string)) {
+	perm(a, f, 0)
+}
+
+// Permute the values at index i to len(a)-1.
+func perm(a []string, f func([]string), i int) {
+	if i > len(a) {
+		f(a)
+		return
+	}
+	perm(a, f, i+1)
+	for j := i + 1; j < len(a); j++ {
+		a[i], a[j] = a[j], a[i]
+		perm(a, f, i+1)
+		a[i], a[j] = a[j], a[i]
+	}
+}
