@@ -13,3 +13,12 @@ func extractEachKth(inputArray []int, k int) []int {
 	}
 	return outputArray
 }
+
+//35: differentSymbolsNaive https://app.codesignal.com/arcade/intro/level-8/8N7p3MqzGQg5vFJfZ
+func differentSymbolsNaive(s string) int {
+	mapSymbols := map[rune]bool{}
+	for _, v := range s {
+		mapSymbols[v] = true
+	}
+	return len(mapSymbols)
+}
