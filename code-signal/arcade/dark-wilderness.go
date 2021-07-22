@@ -38,3 +38,16 @@ func knapsackLight(value1 int, weight1 int, value2 int, weight2 int, maxW int) i
 	}
 	return sum
 }
+
+//40: longestDigitsPrefix https://app.codesignal.com/arcade/intro/level-9/AACpNbZANCkhHWNs3
+func longestDigitsPrefix(inputString string) string {
+	output := ""
+	for _, v := range inputString {
+		if v >= 48 && v <= 57 {
+			output += string(v)
+		} else {
+			break
+		}
+	}
+	return output
+}
