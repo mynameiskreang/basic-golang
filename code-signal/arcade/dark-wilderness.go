@@ -1,5 +1,7 @@
 package main
 
+import "strconv"
+
 //38：growingPlant https://app.codesignal.com/arcade/intro/level-9/xHvruDnQCx7mYom3T
 func growingPlant(upSpeed int, downSpeed int, desiredHeight int) int {
 	if upSpeed >= desiredHeight {
@@ -50,4 +52,27 @@ func longestDigitsPrefix(inputString string) string {
 		}
 	}
 	return output
+}
+
+//41: digitDegree https://app.codesignal.com/arcade/intro/level-9/hoLtYWbjdrD2PF6yo
+func digitDegree(n int) int {
+	ns := strconv.Itoa(n)
+	count := 0
+	for count = 0; ; count++ {
+		if len(ns) == 1 {
+			break
+		}
+		ns = sumString(ns)
+
+	}
+	return count
+}
+
+func sumString(input string) string {
+	sum := 0
+	for _, v := range input {
+		val, _ := strconv.Atoi(string(v))
+		sum += val
+	}
+	return strconv.Itoa(sum)
 }
