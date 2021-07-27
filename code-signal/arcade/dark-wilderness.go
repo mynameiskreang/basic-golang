@@ -1,6 +1,9 @@
 package main
 
-import "strconv"
+import (
+	"math"
+	"strconv"
+)
 
 //38：growingPlant https://app.codesignal.com/arcade/intro/level-9/xHvruDnQCx7mYom3T
 func growingPlant(upSpeed int, downSpeed int, desiredHeight int) int {
@@ -75,4 +78,28 @@ func sumString(input string) string {
 		sum += val
 	}
 	return strconv.Itoa(sum)
+}
+
+//42: bishopAndPawn https://app.codesignal.com/arcade/intro/level-9/6M57rMTFB9MeDeSWo
+func bishopAndPawn(bishop string, pawn string) bool {
+	mapChar := make(map[byte]int, 8)
+	mapChar['a'] = 1
+	mapChar['b'] = 2
+	mapChar['c'] = 3
+	mapChar['d'] = 4
+	mapChar['e'] = 5
+	mapChar['f'] = 6
+	mapChar['g'] = 7
+	mapChar['h'] = 8
+	b1 := mapChar[bishop[0]]
+	b2, _ := strconv.Atoi(string(bishop[1]))
+	p1 := mapChar[pawn[0]]
+	p2, _ := strconv.Atoi(string(pawn[1]))
+	if math.Abs(float64(b1)-float64(b2)) == math.Abs(float64(p1)-float64(p2)) {
+		return true
+	}
+	if b1+b2 == p1+p2 {
+		return true
+	}
+	return false
 }
