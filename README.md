@@ -33,3 +33,4 @@ Install sample data [dvdrental](http://www.postgresqltutorial.com/postgresql-sam
 > https://app.codesignal.com
 
 เพิ่มเฉลย Code Signal
+เพิ่มเฉลย SQL
