@@ -9,3 +9,9 @@ CREATE PROCEDURE countriesSelection()
 BEGIN
 select * from countries where continent = 'Africa';
 END
+
+-- 3: monthlyScholarships https://app.codesignal.com/arcade/db/welcome-to-the-table/6eMusSHbdjavds7Cq
+CREATE PROCEDURE monthlyScholarships()
+BEGIN
+select id,scholarship/12 as scholarship from scholarships order by id asc;
+END

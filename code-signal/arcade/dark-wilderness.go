@@ -3,7 +3,6 @@ package main
 import (
 	"math"
 	"strconv"
-	"strings"
 )
 
 //38：growingPlant https://app.codesignal.com/arcade/intro/level-9/xHvruDnQCx7mYom3T
@@ -103,10 +102,4 @@ func bishopAndPawn(bishop string, pawn string) bool {
 		return true
 	}
 	return false
-}
-
-//43：findEmailDomain https://app.codesignal.com/arcade/intro/level-10/TXFLopNcCNbJLQivP
-func findEmailDomain(address string) string {
-	lastAdd := strings.LastIndexAny(address, "@")
-	return address[lastAdd+1:]
 }
