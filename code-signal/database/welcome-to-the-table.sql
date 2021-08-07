@@ -15,3 +15,13 @@ CREATE PROCEDURE monthlyScholarships()
 BEGIN
 select id,scholarship/12 as scholarship from scholarships order by id asc;
 END
+
+-- 4: projectsTeam https://app.codesignal.com/arcade/db/welcome-to-the-table/J8JfCzFnr4cPMQgZ6
+CREATE PROCEDURE projectsTeam()
+BEGIN
+-- select distinct name from projectLog order by name; จริงๆควรเป็นอันนี้มากกว่า
+-- ใช้ distinct จะไว้หาที่ duplicate อย่าวเดียว
+-- ถ้าใช้ group by เหมาะกับการทำ aggregate functions
+-- ซึ่งโจทย์ถามคำตอบแค่ "ลบตัวซ้ำ" เพราะงันควรเลือก distinct
+select name from projectLog group by name order by name;
+END
