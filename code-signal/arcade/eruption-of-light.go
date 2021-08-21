@@ -1,6 +1,9 @@
 package main
 
-import "strings"
+import (
+	"net"
+	"strings"
+)
 
 //43: isBeautifulString https://app.codesignal.com/arcade/intro/level-10/PHSQhLEw3K2CmhhXE
 func isBeautifulString(inputString string) bool {
@@ -22,7 +25,7 @@ func findEmailDomain(address string) string {
 	return address[lastAdd+1:]
 }
 
-//45: buildPalindrome https://app.codesignal.com/arcade/intro/level-10/ppZ9zSufpjyzAsSEx/solutions?solutionId=bB63s9BYFH9c9oJHy
+//45: buildPalindrome https://app.codesignal.com/arcade/intro/level-10/ppZ9zSufpjyzAsSEx
 // I cannot pass this mission.
 func reverse(s string) string {
 	t := make([]byte, 0, len(s))
@@ -48,4 +51,32 @@ func buildPalindrome(st string) string {
 		}
 	}
 	return st + ts
+}
+
+//46: electionsWinners https://app.codesignal.com/arcade/intro/level-10/8RiRRM3yvbuAd3MNg
+func electionsWinners(votes []int, k int) int {
+	count := 0
+	for i := 0; i < len(votes); i++ {
+		ik := votes[i] + k
+		flagK := true
+		for j := 0; j < len(votes); j++ {
+			if i == j {
+				continue
+			}
+			if ik <= votes[j] {
+				flagK = false
+				break
+			}
+		}
+		if flagK {
+			count++
+		}
+	}
+	return count
+}
+
+//47: isMAC48Address https://app.codesignal.com/arcade/intro/level-10/HJ2thsvjL25iCvvdm
+func isMAC48Address(s string) bool {
+	_, err := net.ParseMAC(s)
+	return err == nil
 }
