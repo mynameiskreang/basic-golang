@@ -25,3 +25,11 @@ BEGIN
 -- ซึ่งโจทย์ถามคำตอบแค่ "ลบตัวซ้ำ" เพราะงันควรเลือก distinct
 select name from projectLog group by name order by name;
 END
+
+-- 5: automaticNotifications https://app.codesignal.com/arcade/db/welcome-to-the-table/kaxWej78qgdGHy8mr/
+CREATE PROCEDURE automaticNotifications()
+SELECT email
+FROM users
+WHERE LOWER(role) NOT IN ("admin", "premium")
+
+ORDER BY email;
