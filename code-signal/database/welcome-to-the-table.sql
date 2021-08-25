@@ -33,3 +33,9 @@ FROM users
 WHERE LOWER(role) NOT IN ("admin", "premium")
 
 ORDER BY email;
+
+-- 6: volleyballResults https://app.codesignal.com/arcade/db/always-leave-table-in-order/r34RHt96RkDvPX6gz
+CREATE PROCEDURE volleyballResults()
+BEGIN
+SELECT * FROM results ORDER BY wins ASC;
+END

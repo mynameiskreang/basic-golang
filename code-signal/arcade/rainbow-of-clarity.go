@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"unicode"
 )
 
@@ -35,4 +36,28 @@ func lineEncoding(s string) string {
 		result = result + fmt.Sprintf("%c", checker)
 	}
 	return result
+}
+
+// 50: chessKnight https://app.codesignal.com/arcade/intro/level-11/pwRLrkrNpnsbgMndb
+func chessKnight(cell string) int {
+	mapChar := make(map[byte]int, 8)
+	mapChar['a'] = 1
+	mapChar['b'] = 2
+	mapChar['c'] = 3
+	mapChar['d'] = 4
+	mapChar['e'] = 5
+	mapChar['f'] = 6
+	mapChar['g'] = 7
+	mapChar['h'] = 8
+	cellI, _ := mapChar[cell[0]]
+	cellJ, _ := strconv.Atoi(string(cell[1]))
+	dataSetI := []int{2, 1, -1, -2, -2, -1, 1, 2}
+	dataSetJ := []int{1, 2, 2, 1, -1, -2, -2, -1}
+	count := 0
+	for s := 0; s < len(dataSetI); s++ {
+		if cellI+dataSetI[s] > 0 && cellJ+dataSetJ[s] > 0 && cellI+dataSetI[s] <= 8 && cellJ+dataSetJ[s] <= 8 {
+			count++
+		}
+	}
+	return count
 }
