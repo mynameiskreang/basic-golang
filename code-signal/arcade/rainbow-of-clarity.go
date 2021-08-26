@@ -61,3 +61,17 @@ func chessKnight(cell string) int {
 	}
 	return count
 }
+
+// 51: deleteDigit https://app.codesignal.com/arcade/intro/level-11/vpfeqDwGZSzYNm2uX
+func deleteDigit(n int) int {
+	max := 0
+	nS := strconv.Itoa(n)
+	for i := 1; i < len(nS)+1; i++ {
+		newNS := nS[:i-1] + nS[i:]
+		nSI, _ := strconv.Atoi(newNS)
+		if nSI > max {
+			max = nSI
+		}
+	}
+	return max
+}
