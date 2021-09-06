@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"unicode"
 )
 
 // 52: longestWord https://app.codesignal.com/arcade/intro/level-12/s9qvXv4yTaWg8g4ma
@@ -51,4 +52,23 @@ func validTime(time string) bool {
 		return false
 	}
 	return true
+}
+
+// 54: sumUpNumbers https://app.codesignal.com/arcade/intro/level-12/YqZwMJguZBY7Hz84T
+func sumUpNumbers(inputString string) int {
+	sum := 0
+	chain := ""
+	for _, i := range inputString {
+		if unicode.IsDigit(i) {
+			chain += string(i)
+		} else {
+			v, _ := strconv.Atoi(chain)
+			sum += v
+			chain = ""
+		}
+	}
+	v, _ := strconv.Atoi(chain)
+	sum += v
+	chain = ""
+	return sum
 }
