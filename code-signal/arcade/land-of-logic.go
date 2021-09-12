@@ -72,3 +72,29 @@ func sumUpNumbers(inputString string) int {
 	chain = ""
 	return sum
 }
+
+// 55: differentSquares https://app.codesignal.com/arcade/intro/level-12/fQpfgxiY6aGiGHLtv
+func differentSquares(matrix [][]int) int {
+	x := 0
+	y := 0
+	mapStr := make(map[string]bool)
+	for {
+		if x+1 < len(matrix[0]) && y+1 < len(matrix) {
+			n1 := matrix[y][x]
+			n2 := matrix[y+1][x]
+			n3 := matrix[y][x+1]
+			n4 := matrix[y+1][x+1]
+			str := fmt.Sprintf("%s%s%s%s", n1, n2, n3, n4)
+			mapStr[str] = true
+		}
+		x++
+		if x == len(matrix[0]) {
+			y++
+			x = 0
+		}
+		if y == len(matrix) {
+			break
+		}
+	}
+	return len(mapStr)
+}
