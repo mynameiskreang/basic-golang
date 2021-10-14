@@ -98,3 +98,37 @@ func differentSquares(matrix [][]int) int {
 	}
 	return len(mapStr)
 }
+
+//56: digitsProduct
+
+//57: fileNaming https://app.codesignal.com/arcade/intro/level-12/sqZ9qDTFHXBNrQeLC
+func fileNaming(names []string) []string {
+	output := []string{}
+	count := 0
+	name := ""
+	for i := 0; i < len(names); {
+		if count > 0 {
+			name = fmt.Sprintf("%s(%d)", names[i], count)
+		} else {
+			name = fmt.Sprintf("%s", names[i])
+		}
+		if isExist(output, name) {
+			count++
+			continue
+		}
+		output = append(output, name)
+		name = ""
+		count = 0
+		i++
+	}
+	return output
+}
+
+func isExist(output []string, name string) bool {
+	for _, o := range output {
+		if name == o {
+			return true
+		}
+	}
+	return false
+}
