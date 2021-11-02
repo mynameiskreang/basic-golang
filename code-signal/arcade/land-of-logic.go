@@ -132,3 +132,18 @@ func isExist(output []string, name string) bool {
 	}
 	return false
 }
+
+// 58 messageFromBinaryCode https://app.codesignal.com/arcade/intro/level-12/sCpwzJCyBy2tDSxKW/solutions
+func messageFromBinaryCode(code string) string {
+	output := ""
+	temp := ""
+	for i, v := range code {
+		temp += string(v)
+		if i%8 == 7 {
+			dec, _ := strconv.ParseInt(temp, 2, 64)
+			output += fmt.Sprintf("%c", dec)
+			temp = ""
+		}
+	}
+	return output
+}
