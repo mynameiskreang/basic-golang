@@ -147,3 +147,75 @@ func messageFromBinaryCode(code string) string {
 	}
 	return output
 }
+
+// 59 spiralNumbers https://app.codesignal.com/arcade/intro/level-12/uRWu6K8E7uLi3Qtvx
+func spiralNumbers(n int) [][]int {
+	var min, max, i, j int
+	min = 0
+	i = 0
+	j = 0
+	max = n - 1
+	output := make([][]int, n)
+	for o := range output {
+		output[o] = make([]int, n)
+	}
+	for l := 1; l <= n*n; l++ {
+		output[i][j] = l
+		if i == min && j < max {
+			j++
+			continue
+		}
+		if i < max && j == max {
+			i++
+			continue
+		}
+		if i == max && j > min {
+			j--
+			continue
+		}
+		if i > min && j == min {
+			i--
+			if output[i][j] != 0 {
+				min++
+				max--
+				l--
+				i++
+			}
+			continue
+		}
+	}
+	return output
+}
+
+// 60 sudoku https://app.codesignal.com/arcade/intro/level-12/tQgasP8b62JBeirMS
+func sudoku(grid [][]int) bool {
+	// case row, column
+	for i := 0; i < 9; i++ {
+		mapI := make(map[int]bool)
+		mapJ := make(map[int]bool)
+		for j := 0; j < 9; j++ {
+			if mapI[grid[i][j]] || mapJ[grid[j][i]] {
+				return false
+			}
+			mapI[grid[i][j]] = true
+			mapJ[grid[j][i]] = true
+		}
+	}
+
+	// case 3x3
+	for x := 0; x < 9; x = x + 3 {
+		for y := 0; y < 9; y = y + 3 {
+			mapIJ := make(map[int]bool)
+			for i := 0; i < 3; i++ {
+				for j := 0; j < 3; j++ {
+					if mapIJ[grid[i+x][j+y]] {
+						return false
+					}
+					mapIJ[grid[i+x][j+y]] = true
+				}
+			}
+		}
+	}
+
+	return true
+}
